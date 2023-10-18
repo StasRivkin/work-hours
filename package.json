@@ -5,9 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "start": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint . --ext ts, tsx --report-unused-disable-directives --max-warnings-0",
+    "test": "vitest",
+    "format": "prettier --write .",
+    "lint": "eslint .",
+    "type-check": "tsc"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.1",
