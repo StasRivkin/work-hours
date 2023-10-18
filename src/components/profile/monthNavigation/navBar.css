@@ -1,0 +1,20 @@
+.navButton{
+    height: 2em;
+    font-size: 14px;
+    padding: 0;
+    min-width: 20vw;
+    max-width: 20vw;
+    background-color: #F8D501;
+    border-color: black;
+    color: black; 
+}
+
+.navButton {
+    background-color:#343a40;
+    color:  white;
+}
+
+.navButton.selected {
+    background-color: #F8D501;
+    color: black;
+  }

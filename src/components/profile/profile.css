@@ -1,0 +1,51 @@
+th,
+td {
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0;
+}
+
+.table>:not(caption)>*>* {
+    padding: 0.2rem 0.2rem;
+}
+
+.editable-cell {
+    position: relative;
+    width: 24vw;
+    z-index: 2;
+}
+
+.editable-cell input {
+    width: 65%;
+}
+
+.editable-cell button {
+    margin-left: auto;
+    padding: 0;
+    z-index: 3;
+}
+
+.table tbody tr {
+    position: relative;
+    z-index: 0;
+}
+
+.comingGoingDiv {
+    position: absolute;
+    width: 8vw;
+    height: 75%;
+    z-index: 2;
+}
+
+@media screen and (max-width: 768px) {
+    .comingGoingDiv {
+        position: absolute;
+        width: 20vw;
+        height: 75%;
+        z-index: 2;
+    }
+}
+
+
