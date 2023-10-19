@@ -24,14 +24,14 @@ const Profile = () => {
       const curMonth = month.toLowerCase();
       dispatch(fetchTableAsinc({ token, month: curMonth }));
     }
-  }, [month]); // Первый запрос будет выполнен, когда изменяется месяц
+  }, [month]);
 
   useEffect(() => {
     if (month) {
       const curMonth = month.toLowerCase();
       dispatch(fetchStatsAsinc({ token, month: curMonth, year: 2023 }));
     }
-  }, [tables]); // Второй запрос будет выполнен, когда изменяется месяц
+  }, [tables]);
 
   return (
     <div className="d-flex align-content-start flex-wrap align-items-center justify-content-center" style={{ height: "80vh", backgroundColor: "#F8D501" }}>
@@ -46,7 +46,7 @@ const Profile = () => {
             <div className="table-responsive bg-dark">
               <TableWorkHours allTables={tables} />
               <div className='text-white text-end me-3'>
-                test - {stats}
+                {stats}
               </div>
             </div>
         }

@@ -48,8 +48,8 @@ const TableWorkHours = ({ allTables }: TableWorkHoursProps) => {
                             <td>{tableItem.weekDay && tableItem.weekDay.toUpperCase()}</td>
                             <td>{tableItem.comingTime}</td>
                             <td>{tableItem.goingTime}</td>
-                            <td>{tableItem.hours}</td>
-                            <td>{tableItem.salary}</td>
+                            <td>{tableItem.hours ? tableItem.hours : ""}</td>
+                            <td>{tableItem.salary ? tableItem.salary : ""}</td>
                         </tr>
                     ))}
                 </tbody>

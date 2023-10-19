@@ -1,15 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../app/store';
 
-const API_URL = "http://localhost:8080/salary";
+const API_URL = "http://172.17.0.85:8080/salary";
 
 export interface WorkDay {
     date: string,
     weekDay: string,
     comingTime: string,
     goingTime: string,
-    hours: number,
-    salary: number
+    hours: string,
+    salary: string
 }
 
 interface WorkDayState {

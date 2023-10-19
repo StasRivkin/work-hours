@@ -1,7 +1,7 @@
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 import './timeMenu.css';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { WorkDay, addTimeAsinc, fetchStatsAsinc, fetchTableAsinc } from '../../../slices/workTimeSlice';
+import { WorkDay, addTimeAsinc, fetchStatsAsinc } from '../../../slices/workTimeSlice';
 
 import "../../loader/loader.css"
 
@@ -64,7 +64,7 @@ const TimeMenu = ({ show, setIsTimeMenuVisible, selectedDate, selectedComingTime
         if (comingTime === selectedComingTime || goingTime === selectedGoingTime) {
             setComingTime("-1");
             setGoingTime("-1");
-            //setIsTimeEdited(true);
+            dispatch(addTimeAsinc({ token: token, date: selectedDate, coming: "-1", going: "-1" }));
             setFormTimeSubmitted(true);
         }
     };
