@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../app/store';
 
-const API_URL = "http://172.17.0.85:8443/profile";
+const API_URL = "https://172.17.0.85:8443/profile";
 
 export interface ProfileDto {
   token?: string;
