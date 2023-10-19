@@ -7,11 +7,11 @@ import Profile from "./profile/Profile"
 const Routers = () => {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="home" />} />
-      <Route path="home" element={<Home />} />
-      <Route path="login" element={<Login />} />
-      <Route path="register" element={<Register />} />
-      <Route path="profile" element={<Profile />} />
+      <Route path="/" element={<Navigate to="/home" />} />
+      <Route path="/home" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/profile" element={<Profile />} />
     </Routes>
   )
 }
