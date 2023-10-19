@@ -26,6 +26,7 @@ const Login = () => {
                 const email = JSON.parse(parse).sub;
                 await dispatch(fetchProfile({ email, token }));
                 await dispatch(fetchMonthsNames(token));
+                navigate("/profile");
             }
         };
         fetchData();
@@ -34,8 +35,7 @@ const Login = () => {
     useEffect(() => {
         if (months.length > 0) {
             dispatch(updateCurrentMonth(months[months.length - 1].toLowerCase()));
-            navigate("/profile");
-        }
+        } 
     }, [months])
 
     const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
