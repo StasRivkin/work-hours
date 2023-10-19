@@ -42,7 +42,7 @@ const Register = () => {
     };
 
     const handleRegister = () => {
-        if (/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(email)) {
+        // if (/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(email)) {
             const profileData: ProfileDto = {
                 profileName: nickName,
                 email: email,
@@ -52,10 +52,10 @@ const Register = () => {
             };
             dispatch(registerProfileAsync(profileData));
             setFormProfileSubmitted(true);
-        } else {
-            alert("wrong email");
-            setEmail("");
-        }
+        // } else {
+        //     alert("wrong email");
+        //     setEmail("");
+        // }
     };
 
     const handleHourlyWageChange = (e: ChangeEvent<HTMLInputElement>) => {
