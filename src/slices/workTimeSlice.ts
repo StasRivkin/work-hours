@@ -1,7 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../app/store';
 
-const API_URL = "https://192.168.64.44:8443/salary";
+//const API_URL = "https://192.168.64.44:8443/salary";
+const API_URL = "https://workhours.fly.dev/salary";
+
 
 export interface WorkDay {
     date: string,
@@ -196,7 +198,7 @@ const workTimeSlice = createSlice({
         },
         updateCurrentMonth: (state, action) => {
             state.monthsData.currentMonth = action.payload || (state.monthsData.months.length > 0 ? state.monthsData.months[0].toLowerCase() : '');
-        }
+        },
     },
     extraReducers: (builder) => {
         builder

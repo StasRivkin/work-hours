@@ -1,12 +1,10 @@
 import { WorkDay } from '../../../slices/workTimeSlice';
-import { useAppSelector } from '../../../app/hooks';
 import { useState } from 'react';
 import TimeMenu from '../timeMenu/TimeMenu';
 
 interface TableWorkHoursProps {
     allTables: WorkDay[];
 }
-
 
 const TableWorkHours = ({ allTables }: TableWorkHoursProps) => {
     const [selectedDate, setSelectedDate] = useState<string>('');

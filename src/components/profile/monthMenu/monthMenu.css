@@ -59,3 +59,8 @@
 .popup-content {
   text-align: center; /* Центрируем текст по центру блока */
 }
+
+.monthButton.selected {
+  background-color: #F8D501;
+  color: black;
+}

@@ -8,7 +8,6 @@ import { WorkDay, fetchStatsAsinc, fetchTableAsinc } from '../../slices/workTime
 import "../loader/loader.css"
 
 const Profile = () => {
-  const tableStatus = useAppSelector(state => state.workDays.workDaysData.status);
   const statsStatus = useAppSelector(state => state.workDays.statsData.status);
   const months: string[] = useAppSelector(state => state.workDays.monthsData.months);
   const month: string = useAppSelector(store => store.workDays.monthsData.currentMonth);
@@ -38,17 +37,20 @@ const Profile = () => {
       <NavBar months={months} />
       <div className="col-10 w-100" style={{ paddingTop: "0px" }}>
         {
-          tableStatus === "loading" ?
-            <div className='bg-dark text-white w-100 d-flex justify-content-center align-items-center; loading-dots' style={{ height: "100vh", paddingTop: "35vh" }}>
-              loading
+          <div className="table-responsive bg-dark">
+            {
+              month ?
+                <TableWorkHours allTables={tables} />
+                :
+                <div className='text-white text-center'> You have no month to show yet. Click the menu button to add it!</div>
+            }
+            <div className='text-white text-end me-3'>
+              {month && statsStatus === "loading" ?
+                <div className='loading-dots'>
+                  loading
+                </div> : stats}
             </div>
-            :
-            <div className="table-responsive bg-dark">
-              <TableWorkHours allTables={tables} />
-              <div className='text-white text-end me-3'>
-                {stats}
-              </div>
-            </div>
+          </div>
         }
       </div>
     </div>

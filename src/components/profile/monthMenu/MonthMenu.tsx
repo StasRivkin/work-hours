@@ -1,7 +1,7 @@
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 import './monthMenu.css';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { addTableAsinc, fetchMonthsNames, fetchTableAsinc, selectMonths, updateCurrentMonth } from '../../../slices/workTimeSlice';
+import { addTableAsinc, fetchMonthsNames, fetchTableAsinc, updateCurrentMonth } from '../../../slices/workTimeSlice';
 
 import "../../loader/loader.css"
 
@@ -30,7 +30,6 @@ const MonthMenu = ({ show, setIsMonthMenuVisible }: MonthMenuProps) => {
                 const curMonth = month.toLowerCase();
                 await dispatch(fetchTableAsinc({ token, month: curMonth }));
                 await dispatch(fetchMonthsNames(token));
-
                 setIsMonthMenuVisible();
             };
             fetchData();
@@ -43,7 +42,6 @@ const MonthMenu = ({ show, setIsMonthMenuVisible }: MonthMenuProps) => {
             await dispatch(addTableAsinc({ token: token, month: month.toLowerCase(), year: 2023 }))
             dispatch(updateCurrentMonth(month.toLowerCase()));
             setFormMonthSubmitted(true);
-
         }
     };
 
