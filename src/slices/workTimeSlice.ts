@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../app/store';
 
 //const API_URL = "https://192.168.64.44:8443/salary";
-const API_URL = "https://workhours.fly.dev/salary";
+const API_URL = "https://workhoursapi.onrender.com/salary";
 
 
 export interface WorkDay {
