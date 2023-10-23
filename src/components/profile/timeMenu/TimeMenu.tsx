@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from 'react';
 import './timeMenu.css';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { WorkDay, addTimeAsinc, fetchStatsAsinc } from '../../../slices/workTimeSlice';
@@ -75,6 +75,32 @@ const TimeMenu = ({ show, setIsTimeMenuVisible, selectedDate, selectedComingTime
         }
     }
 
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
+        const inputValue: string = e.target.value;
+        const cleanedInput: string = inputValue.replace(/\D/g, '').slice(0, 4);
+        if (cleanedInput.length <= 2) {
+            if (Number(cleanedInput[0]) <= 2) {
+                type === "coming" ? setComingTime(cleanedInput) : setGoingTime(cleanedInput);
+            }
+            if (Number(cleanedInput) <= 23) {
+                type === "coming" ? setComingTime(cleanedInput) : setGoingTime(cleanedInput);
+            }
+        } else if (cleanedInput.length === 3) {
+            const hours: string = cleanedInput.slice(0, 2);
+            const minutes: string = cleanedInput.slice(2);
+            if (parseInt(hours, 10) <= 23 && parseInt(minutes, 10) <= 59) {
+                type === "coming" ? setComingTime(`${hours}:${minutes}`) : setGoingTime(`${hours}:${minutes}`);
+            }
+        } else if (cleanedInput.length === 4) {
+            const hours: string = cleanedInput.slice(0, 2);
+            const minutes: string = cleanedInput.slice(2, 4);
+            if (parseInt(hours, 10) <= 23 && parseInt(minutes, 10) <= 59) {
+                type === "coming" ? setComingTime(`${hours}:${minutes}`) : setGoingTime(`${hours}:${minutes}`);
+            }
+        }
+    };
+
+
     return (
         <>
             {
@@ -96,7 +122,7 @@ const TimeMenu = ({ show, setIsTimeMenuVisible, selectedDate, selectedComingTime
                                 type="text"
                                 placeholder="00-00"
                                 value={comingTime}
-                                onChange={(e) => setComingTime(e.target.value)}
+                                onChange={(e) => handleInputChange(e, "coming")}
                             />
                             <label>Going time:</label>
                             <input
@@ -104,7 +130,7 @@ const TimeMenu = ({ show, setIsTimeMenuVisible, selectedDate, selectedComingTime
                                 type="text"
                                 placeholder="00-00"
                                 value={goingTime}
-                                onChange={(e) => setGoingTime(e.target.value)}
+                                onChange={(e) => handleInputChange(e, "going")}
                             />
                             <div className="button-container">
                                 <button className='btn btn-warning w-100 m-1' onClick={handleSave}>Save</button>

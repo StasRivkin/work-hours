@@ -14,6 +14,7 @@ const Login = () => {
     const token = useAppSelector(state => state.profile.token);
     const months = useAppSelector(state => state.workDays.monthsData.months);
     const profileStatus = useAppSelector(state => state.profile.status);
+    const profileError = useAppSelector(state => state.profile.error);
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
@@ -35,7 +36,7 @@ const Login = () => {
     useEffect(() => {
         if (months.length > 0) {
             dispatch(updateCurrentMonth(months[months.length - 1].toLowerCase()));
-        } 
+        }
     }, [months])
 
     const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -57,12 +58,13 @@ const Login = () => {
     return (
         <div className='d-flex align-items-center justify-content-center' style={{ height: "80vh", backgroundColor: "#F8D501" }}>
             <form className="d-flex flex-column align-items-center justify-content-center bg-dark" style={{ borderRadius: "25px", width: "55vw", height: "37vh" }} onSubmit={handleLogIn}>
-                {profileStatus === "loading" || formProfileSubmitted ?
+                {(profileStatus === "loading" || formProfileSubmitted) && !profileError ?
                     <div className='text-white loading-dots'>
                         loading
                     </div>
                     :
                     <>
+                        {profileStatus === "failed" && profileError === "Wrong email or password" && <div className='text-white w-75 text-center pb-3'>wrong email/password</div>}
                         <div className="form-group m-1">
                             <input type="text" className="form-control" placeholder="Your Email *" value={email} onChange={handleEmailChange} />
                         </div>
@@ -74,7 +76,6 @@ const Login = () => {
                         </div>
                     </>
                 }
-                { }
             </form>
         </div>
     )

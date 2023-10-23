@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../app/store';
 
-//const API_URL = "https://localhost:8443/profile";
-const API_URL = "https://wh-d11b.onrender.com/profile";
+const API_URL = "https://localhost:8443/profile";
+//const API_URL = "https://wh-d11b.onrender.com/profile";
 
 export interface ProfileDto {
   token?: string;
@@ -10,7 +10,7 @@ export interface ProfileDto {
   email?: string;
   password?: string;
   hourlyRate?: number | string;
-  dayBreakTimeInMinutes?: number| string;
+  dayBreakTimeInMinutes?: number | string;
   isLoggedIn?: false;
 }
 
@@ -59,18 +59,13 @@ export const registerProfileAsync = createAsyncThunk(
         body: JSON.stringify(profileData),
       });
       if (!response.ok) {
-        if (response.status >= 400 && response.status < 600) {
-          const errorData = await response.json();
-          return rejectWithValue({...errorData, redirect: false});
-        } else {
-          throw new Error('Network response was not ok');
-        }
+        throw new Error(`${response.status}`);
       }
       const data = await response.json();
       const token = data.token;
       return token;
     } catch (error: any) {
-      return rejectWithValue({ message: error.message , redirect: false});
+      return rejectWithValue({ message: error.message, redirect: false });
     }
   }
 );
@@ -88,7 +83,9 @@ export const loginProfileAsync = createAsyncThunk(
       }
     });
     if (!response.ok) {
-      throw new Error('Failed to login');
+      if (response.status === 401) {
+        throw new Error("Wrong email or password");
+      }
     }
     const data = await response.json();
     const token = data.token;
@@ -137,7 +134,7 @@ const profileSlice = createSlice({
   name: 'profile',
   initialState,
   reducers: {
-    clearProfileData: () => {  
+    clearProfileData: () => {
       return initialState;
     },
   },
@@ -155,7 +152,6 @@ const profileSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchProfile.rejected, (state, action) => {
-        state.status = 'failed';
         state.error = action.error?.message || 'Unknown error';
         state.status = 'failed';
       })
