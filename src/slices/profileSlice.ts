@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../app/store';
 
-//const API_URL = "https://localhost:8443/profile";
-const API_URL = "https://wh-d11b.onrender.com/profile";
+const API_URL = "https://localhost:8443/profile";
+//const API_URL = "https://wh-d11b.onrender.com/profile";
 
 export interface ProfileDto {
   token?: string;
