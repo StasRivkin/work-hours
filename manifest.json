@@ -1,7 +1,7 @@
 {
   "short_name": "Work Hours",
   "name": "Work Hours App",
-  "start_url": "/home",
+  "start_url": "https://work-hours-timer.netlify.app/home",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#000000",
