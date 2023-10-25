@@ -27,6 +27,8 @@ const ProfileSettings = ({ show, setIsSettingsMenuVisible }: ProfileSettingsProp
     const [nickname, setNickname] = useState(profile?.profileName || '');
     const [hourlyRate, setHourlyRate] = useState(profile?.hourlyRate || '');
     const [fare, setFare] = useState(profile?.fare || '');
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+
 
     const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
         setNewPassword(e.target.value);
@@ -49,7 +51,6 @@ const ProfileSettings = ({ show, setIsSettingsMenuVisible }: ProfileSettingsProp
             await dispatch(changePasswordAsync({ token, newPassword }))
             setIsSettingsMenuVisible();
         }
-
     };
 
     const handleClose = (event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
@@ -59,6 +60,10 @@ const ProfileSettings = ({ show, setIsSettingsMenuVisible }: ProfileSettingsProp
     }
 
     const handleDeleteProfile = () => {
+        setShowDeleteConfirmation(true)
+    };
+
+    const deleteProfile = () => {
         dispatch(clearProfileData());
         dispatch(clearTableData());
         setInHome(true);
@@ -97,6 +102,15 @@ const ProfileSettings = ({ show, setIsSettingsMenuVisible }: ProfileSettingsProp
                     <button className="btn btn-warning text-white bg-danger m-2 w-75" onClick={handleDeleteProfile}>Delete profile</button>
                 </div>
             </div>
+            {showDeleteConfirmation && (
+                <div className="modal-overlay">
+                    <div className="delete-confirmation-dialog bg-dark">
+                        <p>Are you sure you want to delete your profile?</p>
+                        <button className="btn btn-danger" onClick={deleteProfile}>Confirm</button>
+                        <button className="btn btn-secondary" onClick={() => setShowDeleteConfirmation(false)}>Cancel</button>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
