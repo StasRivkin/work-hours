@@ -1,9 +1,10 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { useEffect, useState } from "react";
-import { clearProfileData, deleteProfileAsync, logoutProfileAsync } from "../../slices/profileSlice";
-import { addTableAsinc, clearTableData, deleteTableAsinc, fetchMonthsNames } from "../../slices/workTimeSlice";
+import { clearProfileData, logoutProfileAsync } from "../../slices/profileSlice";
+import { clearTableData, deleteTableAsinc } from "../../slices/workTimeSlice";
 import MonthMenu from "./monthMenu/MonthMenu";
+import ProfileSettings from "./settingsMenu/ProfileSettings";
 
 const HeaderProfile = () => {
     const dispatch = useAppDispatch();
@@ -14,16 +15,26 @@ const HeaderProfile = () => {
     const [inLogIn, setInLogIn] = useState(() => location.pathname === '/login');
     const [inRegister, setInRegister] = useState(() => location.pathname === '/register');
     const [isMonthMenuVisible, setIsMonthMenuVisible] = useState<boolean>(false);
+    const [IsSettingsMenuVisible, setIsSettingsMenuVisible] = useState<boolean>(false);
+
+    const [showgreeting, setShowgreeting] = useState(true);
 
     const token: string = useAppSelector(state => state.profile.token);
-    const months: string[] = useAppSelector(state => state.workDays.monthsData.months);
     const month: string = useAppSelector(state => state.workDays.monthsData.currentMonth);
+    const profileName: string | undefined = useAppSelector(state => state.profile.data?.profileName);
 
     useEffect(() => {
         if (!token) {
             navigate("/home");
         }
     }, [token])
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setShowgreeting(false);
+        }, 2500);
+        return () => clearTimeout(timer);
+    }, []);
 
     const handleLogOut = () => {
         dispatch(logoutProfileAsync(token))
@@ -35,16 +46,6 @@ const HeaderProfile = () => {
         navigate("/home");
     };
 
-    const handleDeleteProfile = () => {
-        dispatch(clearProfileData());
-        dispatch(clearTableData());
-        setInHome(true);
-        setInLogIn(false);
-        setInRegister(false);
-        dispatch(deleteProfileAsync(token))
-        navigate("/home");
-    };
-
     const handleDeleteTable = () => {
         dispatch(deleteTableAsinc({ token, month, year: 2023 }));
     };
@@ -53,8 +54,13 @@ const HeaderProfile = () => {
         setIsMonthMenuVisible(true);
     };
 
+    const handleEditeProfile = async () => {
+        setIsSettingsMenuVisible(true);
+    };
+
     return (
-        <>
+        <div className={`d-flex ${showgreeting ? "justify-content-between" : "justify-content-end"} align-items-center`}>
+            {showgreeting && <div className="fade-out">Hello {profileName} !</div>}
             <div className="btn-group">
                 <button type="button" className="btn btn-secondary dropdown-toggle btn-warning" data-bs-toggle="dropdown" aria-expanded="false">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-list" viewBox="0 0 16 16">
@@ -65,14 +71,17 @@ const HeaderProfile = () => {
                     <li><button type="button" className="dropdown-item text-white bg-dark" onClick={handleAddMonth}>Add month</button></li>
                     <li><button type="button" className="dropdown-item text-white bg" onClick={handleDeleteTable}>Delete month</button></li>
                     <li><hr className="dropdown-divider text-white" /></li>
-                    <li><button type="button" className="dropdown-item text-white bg-dark" onClick={handleLogOut}>Log-out</button></li>
-                    <li><button type="button" className="dropdown-item text-white bg-danger" onClick={handleDeleteProfile}>Delete profile</button></li>
+                    <li><button type="button" className="dropdown-item text-white bg-dark" onClick={handleEditeProfile}>Profile</button></li>
+                    <li><button type="button" className="dropdown-item text-black bg-danger" onClick={handleLogOut}>Log-out</button></li>
                 </ul>
                 {isMonthMenuVisible &&
                     <MonthMenu show={true} setIsMonthMenuVisible={() => setIsMonthMenuVisible(false)} />
                 }
+                {IsSettingsMenuVisible &&
+                    <ProfileSettings show={true} setIsSettingsMenuVisible={() => setIsSettingsMenuVisible(false)} />
+                }
             </div>
-        </>
+        </div>
     )
 }
 

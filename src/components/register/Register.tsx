@@ -10,7 +10,6 @@ const Register = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [hourlyRate, setHourlyRate] = useState<number | string>('');
-    const [dayBreakTimeInMinutes, setDayBreakTimeInMinutes] = useState<number | string>('');
     const [formProfileSubmitted, setFormProfileSubmitted] = useState(false);
 
     const token = useAppSelector(state => state.profile.token);
@@ -43,7 +42,7 @@ const Register = () => {
     };
 
     const handleRegister = () => {
-        if (email === "" || nickName === "" || password === "" || hourlyRate === "" || dayBreakTimeInMinutes === "") {
+        if (email === "" || nickName === "" || password === "" || hourlyRate === "") {
             alert("All fields must be filled");
             return;
         }
@@ -53,7 +52,6 @@ const Register = () => {
                 email: email,
                 password: password,
                 hourlyRate: hourlyRate,
-                dayBreakTimeInMinutes: dayBreakTimeInMinutes,
             };
             dispatch(registerProfileAsync(profileData));
             setFormProfileSubmitted(true);
@@ -71,15 +69,6 @@ const Register = () => {
             }
         }
     };
-
-    const handleDayBreakTimeInMinutesChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        if (/^\d*$/.test(value) || value === '') {
-            if (value === '' || (parseInt(value) > 0 && parseInt(value) <= 120)) {
-                setDayBreakTimeInMinutes(value);
-            }
-        }
-    }
 
     return (
         <div className='d-flex align-items-center justify-content-center' style={{ height: "80vh", backgroundColor: "#F8D501" }}>
@@ -102,9 +91,6 @@ const Register = () => {
                         </div>
                         <div className="form-group m-1">
                             <input type="number" className="form-control" placeholder="Hourly Rate *" value={hourlyRate} onChange={handleHourlyWageChange} />
-                        </div>
-                        <div className="form-group m-1">
-                            <input type="number" className="form-control" placeholder="Break Time (in Minutes) *" value={dayBreakTimeInMinutes} onChange={handleDayBreakTimeInMinutesChange} />
                         </div>
                         <div className="form-group m-1">
                             <button type="button" className="btn btn-outline-light me-2" onClick={handleRegister}>Sign-up</button>

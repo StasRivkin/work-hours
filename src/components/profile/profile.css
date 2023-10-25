@@ -48,4 +48,21 @@ td {
     }
 }
 
+@keyframes fadeOut {
+    from {
+        color: white;
+        font-size: 20px; /* начальный размер шрифта */
+        font-weight: bold; /* начальная жирность шрифта */
+      }
+      to {
+        color: rgb(32, 32, 32);
+        font-size: 16px; /* конечный размер шрифта */
+        font-weight: normal; /* конечная жирность шрифта */
+      }
+  }
+  
+  .fade-out {
+    animation: fadeOut 2.5s ease; /* длительность анимации 1.5 секунды */
+  }
+
 

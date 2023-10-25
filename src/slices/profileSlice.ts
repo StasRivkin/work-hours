@@ -10,7 +10,7 @@ export interface ProfileDto {
   email?: string;
   password?: string;
   hourlyRate?: number | string;
-  dayBreakTimeInMinutes?: number | string;
+  fare?: number | string;
   isLoggedIn?: false;
 }
 
@@ -130,6 +130,52 @@ export const deleteProfileAsync = createAsyncThunk(
     return data;
   });
 
+export const updateProfileAsync = createAsyncThunk(
+  'profile/updateProfile',
+  async ({ token, profileName, hourlyRate, fare }: any) => {
+    const response = await fetch(`${API_URL}/edite`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify({
+        profileName,
+        hourlyRate,
+        fare
+      })
+    });
+    if (!response.ok) {
+      throw new Error('Failed to change data');
+    }
+    const data: ProfileDto = await response.json();
+    return data;
+  });
+
+export const changePasswordAsync = createAsyncThunk(
+  'profile/updatePassword',
+  async ({ token, newPassword }: any) => {
+    const response = await fetch(`${API_URL}/changePassword`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        'X-Password': newPassword
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Failed to change password');
+    }
+    const data: string = await response.text();
+    if (data === "password changed") {
+      return data;
+    }else{
+      throw new Error('Failed to change password');
+    }
+  });
+
 const profileSlice = createSlice({
   name: 'profile',
   initialState,
@@ -170,6 +216,34 @@ const profileSlice = createSlice({
         state.status = 'failed';
       })
 
+      //update ->
+      .addCase(updateProfileAsync.pending, state => {
+        state.status = 'loading';
+      })
+      .addCase(updateProfileAsync.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.status = 'succeeded';
+        state.error = null;
+      })
+      .addCase(updateProfileAsync.rejected, (state, action) => {
+        state.error = action.error?.message || 'Unknown error';
+        state.status = 'failed';
+      })
+
+      //changePassword ->
+      .addCase(changePasswordAsync.pending, state => {
+        state.status = 'loading';
+      })
+      .addCase(changePasswordAsync.fulfilled, (state, action) => {
+        state.token = "";
+        state.data = initialState;
+        state.status = 'succeeded';
+        state.error = null;
+      })
+      .addCase(changePasswordAsync.rejected, (state, action) => {
+        state.error = action.error?.message || 'Unknown error';
+        state.status = 'failed';
+      })
       //LogIn ->
       .addCase(loginProfileAsync.pending, state => {
         state.status = 'loading';
