@@ -26,7 +26,7 @@ const ProfileSettings = ({ show, setIsSettingsMenuVisible }: ProfileSettingsProp
     const [newPassword, setNewPassword] = useState('');
     const [nickname, setNickname] = useState(profile?.profileName || '');
     const [hourlyRate, setHourlyRate] = useState(profile?.hourlyRate || '');
-    const [fare, setFare] = useState(profile?.fare || '');
+    const [fare, setFare] = useState(profile?.fare || '0');
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
 
@@ -40,6 +40,10 @@ const ProfileSettings = ({ show, setIsSettingsMenuVisible }: ProfileSettingsProp
 
     const handleHourlyRateChange = (e: ChangeEvent<HTMLInputElement>) => {
         setHourlyRate(e.target.value);
+    };
+
+    const handleFareChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setFare(e.target.value);
     };
 
     const handleSave = async () => {
@@ -91,6 +95,9 @@ const ProfileSettings = ({ show, setIsSettingsMenuVisible }: ProfileSettingsProp
                         </li>
                         <li className='pb-3'>
                             <div className='fw-bold'>Hourly rate:</div> <input className='bg-dark text-white border-dark' type="text" value={hourlyRate} onChange={handleHourlyRateChange} />
+                        </li>
+                        <li className='pb-3'>
+                            <div className='fw-bold'>Fare:</div> <input className='bg-dark text-white border-dark' type="text" value={fare} onChange={handleFareChange} />
                         </li>
                         <li >
                             <div className='fw-bold'>New password:</div> <input className='bg-dark text-white border-dark' type="text" placeholder="New Password *" value={newPassword} onChange={handlePasswordChange} />

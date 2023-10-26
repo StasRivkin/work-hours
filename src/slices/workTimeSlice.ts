@@ -14,6 +14,12 @@ export interface WorkDay {
     salary: string
 }
 
+export interface CalculateData {
+    incomeTax: string;      // Сумма налога на доходы физических лиц
+    healthInsuranceTax: string;    // Сумма налога на медицинскую страховку
+    pensionContributionTax: string; // Сумма взноса в пенсионный фонд
+}
+
 interface WorkDayState {
     workDays: WorkDay[];
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
@@ -29,6 +35,7 @@ interface MonthsState {
 
 interface StatsState {
     stats: string;
+    calculatedData: CalculateData;
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string | null;
 }
@@ -47,6 +54,11 @@ const initialState: InitialState = {
     },
     statsData: {
         stats: "",
+        calculatedData: {
+            incomeTax: "",
+            healthInsuranceTax: "",
+            pensionContributionTax: ""
+        },
         status: "idle",
         error: null
     },
@@ -100,7 +112,7 @@ export const fetchTableAsinc = createAsyncThunk(
     });
 
 export const fetchStatsAsinc = createAsyncThunk(
-    'workDay/fetchStats',
+    'workDay/fetchSalaryStats',
     async ({ token, month, year }: { token: string, month: string, year: number }) => {
         const response = await fetch(`${API_URL}/getSalaryAfterTax/${month}/${year}`, {
             headers: {
@@ -110,9 +122,26 @@ export const fetchStatsAsinc = createAsyncThunk(
             }
         });
         if (!response.ok) {
-            throw new Error(`Failed to fetch status for ${month}`);
+            throw new Error(`Failed to fetch total salary for for ${month}`);
         }
         const data: string = await response.text();
+        return data;
+    });
+
+export const fetchTaxStatsAsinc = createAsyncThunk(
+    'workDay/fetchTaxStats',
+    async ({ token, month, year }: { token: string, month: string, year: number }) => {
+        const response = await fetch(`${API_URL}/getCalculatedData/${month}/${year}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + token
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`Failed to fetch stats for ${month}`);
+        }
+        const data: CalculateData = await response.json();
         return data;
     });
 
@@ -295,6 +324,23 @@ const workTimeSlice = createSlice({
                 state.statsData.status = 'failed';
                 state.statsData.error = action.error?.message || 'Unknown error';
             })
+
+            //calculatedData ->
+            .addCase(fetchTaxStatsAsinc.pending, (state) => {
+                state.statsData.status = 'loading';
+                state.statsData.error = null;
+            })
+            .addCase(fetchTaxStatsAsinc.fulfilled, (state, action) => {
+                state.statsData.status = 'succeeded';
+                state.statsData.calculatedData = action.payload;
+                state.statsData.error = null;
+            })
+            .addCase(fetchTaxStatsAsinc.rejected, (state, action) => {
+                state.statsData.status = 'failed';
+                state.statsData.error = action.error?.message || 'Unknown error';
+            })
+
+
     },
 });
 

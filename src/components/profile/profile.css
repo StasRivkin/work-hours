@@ -51,7 +51,7 @@ td {
 @keyframes fadeOut {
     from {
         color: white;
-        font-size: 20px; /* начальный размер шрифта */
+        font-size: 40px; /* начальный размер шрифта */
         font-weight: bold; /* начальная жирность шрифта */
       }
       to {
@@ -62,7 +62,10 @@ td {
   }
   
   .fade-out {
-    animation: fadeOut 2.5s ease; /* длительность анимации 1.5 секунды */
+    position: absolute;
+    white-space: nowrap;
+    z-index: 9999;
+    animation: fadeOut 2.5s ease; 
   }
 
 

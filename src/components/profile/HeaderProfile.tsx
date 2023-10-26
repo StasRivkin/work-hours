@@ -59,8 +59,8 @@ const HeaderProfile = () => {
     };
 
     return (
-        <div className={`d-flex ${showgreeting ? "justify-content-between" : "justify-content-end"} align-items-center`}>
-            {showgreeting && <div className="fade-out">Hello {profileName} !</div>}
+        <div className={`d-flex justify-content-end align-items-center`}>
+            {showgreeting && <div className="fade-out pe-5">Hello {profileName} !</div>}
             <div className="btn-group">
                 <button type="button" className="btn btn-secondary dropdown-toggle btn-warning" data-bs-toggle="dropdown" aria-expanded="false">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-list" viewBox="0 0 16 16">

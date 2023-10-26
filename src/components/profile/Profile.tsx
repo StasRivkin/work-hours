@@ -2,10 +2,11 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import "./profile.css"
 import NavBar from './monthNavigation/NavBar';
 import TableWorkHours from './table/TableWorkHours';
-import { useEffect } from 'react';
-import { WorkDay, fetchStatsAsinc, fetchTableAsinc } from '../../slices/workTimeSlice';
+import { useEffect, useState } from 'react';
+import { WorkDay, fetchStatsAsinc, fetchTableAsinc, fetchTaxStatsAsinc } from '../../slices/workTimeSlice';
 
 import "../loader/loader.css"
+import StatsMenu from './statsMenu/StatsMenu';
 
 const Profile = () => {
   const statsStatus = useAppSelector(state => state.workDays.statsData.status);
@@ -17,6 +18,8 @@ const Profile = () => {
   const tables: WorkDay[] = useAppSelector(state => state.workDays.workDaysData.workDays);
 
   const dispatch = useAppDispatch();
+
+  const [IsStatsVisible, setIsStatsVisible] = useState<boolean>(false);
 
   useEffect(() => {
     if (month) {
@@ -32,6 +35,10 @@ const Profile = () => {
     }
   }, [tables]);
 
+  const handleShowStats = async () => {
+    setIsStatsVisible(true);
+  };
+
   return (
     <div className="d-flex align-content-start flex-wrap align-items-center justify-content-center" style={{ height: "80vh", backgroundColor: "#F8D501" }}>
       <NavBar months={months} />
@@ -45,14 +52,19 @@ const Profile = () => {
                 <div className='text-white text-center'> You have no month to show yet. Click the menu button to add it!</div>
             }
             <div className='text-white text-end me-3'>
-              {month && statsStatus === "loading" ?
-                <div className='loading-dots'>
-                  loading
-                </div> : stats}
+              {
+                month && statsStatus === "loading" ?
+                  <div className='loading-dots'>
+                    loading
+                  </div>
+                  :
+                  <div onClick={handleShowStats}>{stats}</div>
+              }
             </div>
           </div>
         }
       </div>
+      {IsStatsVisible && <StatsMenu show={true} setIsStatsVisible={() => setIsStatsVisible(false)} />}
     </div>
 
   )
